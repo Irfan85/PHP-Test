@@ -10,6 +10,18 @@ if (isset($_POST["submit"])) {
     $userName = $_POST["username"];
     $password = $_POST["password"];
 
+    // Escaping certain characters to prevent SQL injection
+    $userName = mysqli_real_escape_string($connection, $userName);
+    $password = mysqli_real_escape_string($connection, $password);
+
+    // Encrypting the password using blowfish
+    $hashFormat = "$2y$10$";
+    // We need 22 characters for blowfish hashes
+    $salt = "AnyRandomStringWith22C";
+    $hashAndSalt = $hashFormat . $salt;
+
+    $password =  crypt($password, $hashAndSalt);
+
     if ($userName && $password) {
         $query = "INSERT INTO users(name, password) ";
         $query .= "VALUES('$userName', '$password')";
@@ -44,6 +56,17 @@ if (isset($_POST["update"])) {
     $id = $_POST["id"];
     $userName = $_POST["username"];
     $password = $_POST["password"];
+    
+    // Escaping certain characters to prevent SQL injection
+    $userName = mysqli_real_escape_string($connection, $userName);
+    $password = mysqli_real_escape_string($connection, $password);
+    
+    // Encrypting the password using blowfish
+    $hashFormat = "$2y$10$";
+    $salt = "AnyRandomStringWith22C";
+    $hashAndSalt = $hashFormat . $salt;
+    
+    $password =  crypt($password, $hashAndSalt);
 
     if ($id && $userName && $password) {
         $query = "UPDATE users SET ";
