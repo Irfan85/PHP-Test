@@ -130,5 +130,4 @@
     if(in_array(24, $anArray)){
         echo "24 is in that array <br>";
     }
-
 ?>
